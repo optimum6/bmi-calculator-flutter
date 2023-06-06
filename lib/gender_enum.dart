@@ -1,1 +1,1 @@
-enum Gender { MALE, FEMALE }
+enum Gender { MALE, FEMALE, NONE }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'reusable_card.dart';
 import 'gender_child.dart';
+import 'gender_enum.dart';
 
 const double bottomContainerHeight = 75.0;
 const activeCardColour = Color(0xFF1D1E33);
@@ -13,29 +14,7 @@ class InputPage extends StatefulWidget {
 }
 
 class _InputPageState extends State<InputPage> {
-  Color maleCardColour = inactiveCardColour;
-  Color femaleCardColour = inactiveCardColour;
-
-  void updateCardColours(int gender) {
-    // 0 = male, 1 = female
-    if (gender == 0) {
-      //  Male clicked
-      if (maleCardColour == activeCardColour) {
-        maleCardColour = inactiveCardColour;
-      } else {
-        maleCardColour = activeCardColour;
-        femaleCardColour = inactiveCardColour;
-      }
-    } else {
-      //Female clicked
-      if (femaleCardColour == activeCardColour) {
-        femaleCardColour = inactiveCardColour;
-      } else {
-        femaleCardColour = activeCardColour;
-        maleCardColour = inactiveCardColour;
-      }
-    }
-  }
+  Gender selectedGender = Gender.NONE;
 
   @override
   Widget build(BuildContext context) {
@@ -50,35 +29,33 @@ class _InputPageState extends State<InputPage> {
             child: Row(
               children: [
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        //Male card pressed
-                        updateCardColours(0);
-                      });
-                    },
-                    child: ReuseableCard(
-                        colour: maleCardColour,
-                        cardChild: GenderChild(
-                          icon: FontAwesomeIcons.mars,
-                          text: 'MALE',
-                        )),
-                  ),
+                  child: ReuseableCard(
+                      onPress: () {
+                        setState(() {
+                          selectedGender = Gender.MALE;
+                        });
+                      },
+                      colour: selectedGender == Gender.MALE
+                          ? activeCardColour
+                          : inactiveCardColour,
+                      cardChild: GenderChild(
+                        icon: FontAwesomeIcons.mars,
+                        text: 'MALE',
+                      )),
                 ),
                 Expanded(
-                  child: GestureDetector(
-                    onTap: () {
+                  child: ReuseableCard(
+                    onPress: () {
                       setState(() {
-                        //Female card pressed
-                        updateCardColours(1);
+                        selectedGender = Gender.FEMALE;
                       });
                     },
-                    child: ReuseableCard(
-                      colour: femaleCardColour,
-                      cardChild: GenderChild(
-                        icon: FontAwesomeIcons.venus,
-                        text: 'FEMALE',
-                      ),
+                    colour: selectedGender == Gender.FEMALE
+                        ? activeCardColour
+                        : inactiveCardColour,
+                    cardChild: GenderChild(
+                      icon: FontAwesomeIcons.venus,
+                      text: 'FEMALE',
                     ),
                   ),
                 ),
